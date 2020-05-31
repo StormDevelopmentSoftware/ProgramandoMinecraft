@@ -1,12 +1,22 @@
-﻿using System;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace ProgramandoMinecraft
 {
-    class Program
+    static class Program
     {
-        static void Main(string[] args)
+        static readonly CancellationTokenSource Cts
+            = new CancellationTokenSource();
+
+        static async Task Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var bot = new ProgramandoMinecraftBot();
+            await bot.InitializeAsync();
+
+            while (!Cts.IsCancellationRequested)
+                await Task.Delay(1);
+
+            await bot.ShutdownAsync();
         }
     }
 }
